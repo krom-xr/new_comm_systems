@@ -36,6 +36,36 @@ angular.module('TEST', [])
             });
         }
     })
+    .directive('initDomElPosition', function() {
+        return function(scope, element, attrs) {
+            element.one('mousedown', function(e) {
+                var $blocks = element.children();
+                $blocks.each(function(i, block) {
+                    var $block = $(block);
+                    var position = $block.position();
+                    console.log(position);
+                    $block.css('left', position.left + 'px');
+                    $block.css('top', position.top + 'px');
+                });
+                $blocks.css('position', 'absolute');
+            });
+            //var watch =  scope.$watch(function() {
+                //var $blocks = element.children();
+                //if ($blocks.length) {
+
+                    //$blocks.one('mousedown', function() {
+                        //console.log('wtf');
+                    //});
+                    //watch();
+                //}
+            //});
+            //element.children().one('mousedown', function() {
+                //console.log('wtf');
+                //$(this).css('position', 'absolute');
+            //});
+        }
+    })
+
     .directive('liCutter', function() {
         function hideList($list, cut_length) {
             $list.each(function(i, li) {
