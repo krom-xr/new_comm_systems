@@ -1,6 +1,7 @@
 /*global angular, _ */
 angular.module('TEST', [])
     .controller('ItemsCtrl', function($scope, MoviesSrv) {
+        MoviesSrv.prepareData();
         $scope.items = MoviesSrv.data;
 
     })
@@ -11,6 +12,18 @@ angular.module('TEST', [])
     })
     .service('MoviesSrv', function() {
         var movies = {
+            prepareData: function() {
+                _.each(movies.data, function(movie) {
+                    _.each(movie.properties, function(property, key) {
+                        if (_.isString(property)) {
+                            if (property.split(",").length > 1) {
+                                movie.properties[key] = _.map(property.split(','), function(prop) { return $.trim(prop); });
+                            }
+                        }
+
+                    });
+                });
+            },
             data: data,
             paintMovies: function(property, value) {
                 if (!_.include(property.value, value)) { return; }
@@ -71,6 +84,10 @@ angular.module('TEST', [])
                     if (!item.active) { return; }
                     item.left = e.clientX - element.width()/2 - $holder.position().left;
                     item.top = e.clientY - 30 + $holder.scrollTop();
+
+                    if (item.top < 0) { item.top = 0; }
+                    if (item.left < 0) { item.left = 0; }
+                    if (item.left > $holder.width() - element.width()) { item.left = $holder.width() - element.width(); }
                     scope.$apply();
                 });
 
