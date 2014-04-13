@@ -1,4 +1,4 @@
-/*global angular, _ */
+/*global angular, _, data*/
 angular.module('TEST', [])
     .controller('ItemsCtrl', function($scope, MoviesSrv) {
         MoviesSrv.prepareData();
@@ -26,6 +26,7 @@ angular.module('TEST', [])
             },
             data: data,
             paintMovies: function(property, value) {
+                if (!property) { return; }
                 if (!_.include(property.value, value)) { return; }
                 _.each(movies.data, function(movie) {
                     var movie_prop = movie.properties[property.name];
@@ -37,21 +38,33 @@ angular.module('TEST', [])
                 });
             }
             
-        }
+        };
         return movies;
     })
     .service('PropertiesSrv', function(MoviesSrv) {
         var genre_list = [
+            { name: 'Боевик',  color: 'orange'},
             { name: 'Ужасы',   color: 'red'},
             { name: 'Комедия', color: 'green'},
             { name: 'Драма',  color: 'blue'},
-            { name: 'Боевик',  color: 'orange'},
+        ];
+        var country_list = [
+            { name: 'США',  color: 'red'},
+            { name: 'Великобритания',  color: 'blue'},
+            { name: 'Франция',  color: 'brown'},
+        ];
+        var artists_list = [
+            { name: 'Сигурни Уивер',  color: 'red'},
+            { name: 'Арнольд Шварценеггер',  color: 'blue'},
+            { name: 'Брэдли Купер',  color: 'brown'},
+            { name: 'Юэн МакГрегор',  color: 'orange'},
         ]
+
         var properties = {
             list: [
                 { name: 'genre', title: 'Жанр', value: genre_list },
-                { name: 'artists', title: 'Актер', value: [] },
-                { name: 'country', title: 'Страна', value: [] }
+                { name: 'country', title: 'Страна', value: country_list },
+                { name: 'artists', title: 'Актер', value: artists_list },
             ],
             selected: false,
             property_value: {},
@@ -59,7 +72,7 @@ angular.module('TEST', [])
                 MoviesSrv.paintMovies(properties.selected, properties.property_value);
             }
         };
-        return properties
+        return properties;
     })
     .directive('blockList', function() {
         return {
@@ -68,7 +81,7 @@ angular.module('TEST', [])
             restrict: 'EA',
             scope: { items: "="},
             link: function(scope, element, attrs) { }
-        }
+        };
     })
     .directive('dragItem', function() {
         var $document = $(document);
@@ -97,7 +110,7 @@ angular.module('TEST', [])
                 });
 
             });
-        }
+        };
     })
 
     .directive('initDomElPosition', function() {
@@ -121,13 +134,13 @@ angular.module('TEST', [])
                         if (block === block2) { return; }
                         if (block2.style.left === block.style.left) {
                             //block2.style.top = parseInt(block.style.top) + $(block).height() + 10 + 'px';
-                            block2.style.top = parseInt(block.style.top) + block.offsetHeight + 20 + 'px';
+                            block2.style.top = parseInt(block.style.top, 10) + block.offsetHeight + 20 + 'px';
                         }
-                    };
+                    }
                 });
 
             }, 1000);
-        }
+        };
     })
 
     .directive('liCutter', function() {
@@ -143,7 +156,7 @@ angular.module('TEST', [])
             var $li_show_hide = $("<li class='li-show-hide _show'>...<span class='glyphicon glyphicon-eye-open'></span><span class='glyphicon glyphicon-eye-close'></span></li>");
             var cut_length = attrs.liCutter;
 
-            $li_show_hide.on('click', function() { 
+            $li_show_hide.on('click', function() {
                 if ($li_show_hide.hasClass("_show")) {
                     $li_show_hide.removeClass("_show").addClass("_hide");
                     element.children().show();
@@ -161,7 +174,7 @@ angular.module('TEST', [])
                     watch();
                 }
             });
-        }
+        };
     })
     .directive('specialBind', function() {
         return {
@@ -178,7 +191,7 @@ angular.module('TEST', [])
                     scope.bind_ob = bind_ob;
                 }
             }
-        } 
+        };
     })
     .filter('get_key_name', function() {
         return function(name) {
@@ -191,7 +204,7 @@ angular.module('TEST', [])
                 scenario: 'Сценарий',
                 producer: 'Продюсер'
 
-            }
+            };
             return names[name];
         };
     });
