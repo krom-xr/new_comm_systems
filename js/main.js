@@ -43,7 +43,6 @@ angular.module('TEST', [])
             selected: false,
             property_value: {},
             change: function() {
-                console.log(properties.property_value);
                 MoviesSrv.paintMovies(properties.selected, properties.property_value);
             }
         };
@@ -70,7 +69,7 @@ angular.module('TEST', [])
                 // вешаем на document, потому что иногда мышь двигается слишком быстро, и element перестает слушать событие mousemove
                 $document.on('mousemove', function(e) {
                     if (!item.active) { return; }
-                    item.left = e.clientX - element.width()/2;
+                    item.left = e.clientX - element.width()/2 - $holder.position().left;
                     item.top = e.clientY - 30 + $holder.scrollTop();
                     scope.$apply();
                 });
@@ -86,7 +85,9 @@ angular.module('TEST', [])
 
     .directive('initDomElPosition', function() {
         return function(scope, element, attrs) {
-            element.one('mousedown', function(e) {
+
+            //TODO тут хак. Не придумал как проверить что весь дом уже сформировался
+            setTimeout(function() {
                 var $blocks = element.children();
                 var $holder = element.closest('.blocks-holder');
                 $blocks.each(function(i, block) {
@@ -96,7 +97,19 @@ angular.module('TEST', [])
                     $block.css('top', position.top + $holder.scrollTop() + 'px');
                 });
                 $blocks.css('position', 'absolute');
-            });
+
+                $blocks.each(function(i, block) {
+                    for (var j = i + 1; j < $blocks.length; j++) {
+                        var block2 = $blocks[j];
+                        if (block === block2) { return; }
+                        if (block2.style.left === block.style.left) {
+                            //block2.style.top = parseInt(block.style.top) + $(block).height() + 10 + 'px';
+                            block2.style.top = parseInt(block.style.top) + block.offsetHeight + 20 + 'px';
+                        }
+                    };
+                });
+
+            }, 1000);
         }
     })
 
