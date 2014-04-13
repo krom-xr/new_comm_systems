@@ -1,0 +1,22 @@
+<div>
+    <div 
+        ng-repeat="item in items"
+        class="block-item panel panel-default"
+        ng-style="{left: item.left + 'px', top: item.top + 'px', zIndex: item.active && 100}"
+        >
+
+        <div
+            drag-item="item"
+            class="panel-heading">
+            {{  item.title }}
+        </div>
+        <div class="panel-body">
+            <ul li-cutter="3">
+                <li ng-repeat-order="(key, prop) in item.properties by ['genre', 'year', 'country', 'artists', 'director', 'scenario', 'producer']">
+                    {{ key|get_key_name }}: <span special-bind="prop"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+</div> 

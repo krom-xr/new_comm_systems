@@ -1,0 +1,8 @@
+<ng-switch on="type">
+    <span ng-switch-when="string"> {{ bind_ob }} </span>
+    <span ng-switch-when="array">
+        <ul li-cutter="2">
+            <li ng-repeat="item in bind_ob">{{ item }}</li>
+        </ul>
+    </span>
+</ng-switch>

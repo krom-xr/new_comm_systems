@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html ng-app="TEST">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+    <script type="text/javascript" charset="utf-8" src="http://code.jquery.com/jquery-2.0.2.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://rawgithub.com/lodash/lodash/2.4.1/dist/lodash.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/data.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/main.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/ng-repeat-order.js"></script>
+
+    <title>Index</title>
+    
+    <style type="text/css">
+        .block-item {
+            width: inherit;
+            max-width: 250px;
+            margin: 8px;
+            float: left;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .block-item .panel-heading { cursor: pointer; }
+
+        .li-show-hide { cursor: pointer; color: blue; list-style: none; }
+        .li-show-hide._show .glyphicon-eye-close { display: none }
+        .li-show-hide._hide .glyphicon-eye-open { display: none }
+    </style>
+</head>
+<body>
+    <div class="col-xs-12">
+        <div class="col-xs-8" ng-controller="ItemsCtrl">
+            <block-list items="items"></block-list>
+        </div>
+
+        <div class="col-xs-4">
+            <hr />
+        </div>
+    </div>
+
+
+
+    
+</body>
+</html>
