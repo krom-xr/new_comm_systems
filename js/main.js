@@ -14,22 +14,25 @@ angular.module('TEST', [])
         }
     })
     .directive('dragItem', function() {
+        var $document = $(document);
         return function(scope, element, attrs) {
             var item = scope.$eval(attrs.dragItem);
             element.on('mousedown', function(e) {
                 item.active = true;
 
+                // вешаем на document, потому что иногда мышь двигается слишком быстро, и element перестает слушать событие mousemove
+                $document.on('mousemove', function(e) {
+                    if (!item.active) { return; }
+                    item.left = e.clientX - element.width()/2;
+                    item.top = e.clientY - 30;
+                    scope.$apply();
+                });
 
-            });
-            element.on('mouseup', function(e) {
-                item.active = false;
-            });
+                $document.on('mouseup', function(e) {
+                    item.active = false;
+                    $document.off('mouseup').off('mousemove');
+                });
 
-            element.on('mousemove', function(e) {
-                if (!item.active) { return; }
-                item.left = e.clientX - element.width()/2;
-                item.top = e.clientY - 30;
-                scope.$apply();
             });
         }
     })
@@ -43,7 +46,6 @@ angular.module('TEST', [])
             });
         }
         return function(scope, element, attrs) {
-            console.log('wtf');
             var $li_show_hide = $("<li class='li-show-hide _show'>...<span class='glyphicon glyphicon-eye-open'></span><span class='glyphicon glyphicon-eye-close'></span></li>");
             var cut_length = attrs.liCutter;
 
@@ -58,8 +60,6 @@ angular.module('TEST', [])
             });
 
             scope.$watch(function() {
-            //TODO тут доработать
-            //setTimeout(function() {
                 var $list = element.children();
                 if ($list.length > cut_length) {
                     hideList($list, cut_length);
