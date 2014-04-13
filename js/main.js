@@ -17,14 +17,18 @@ angular.module('TEST', [])
         var $document = $(document);
         return function(scope, element, attrs) {
             var item = scope.$eval(attrs.dragItem);
+            var $holder = element.closest('.blocks-holder');
+
             element.on('mousedown', function(e) {
+                console.log(e);
                 item.active = true;
+                console.log($holder);
 
                 // вешаем на document, потому что иногда мышь двигается слишком быстро, и element перестает слушать событие mousemove
                 $document.on('mousemove', function(e) {
                     if (!item.active) { return; }
                     item.left = e.clientX - element.width()/2;
-                    item.top = e.clientY - 30;
+                    item.top = e.clientY - 30 + $holder.scrollTop();
                     scope.$apply();
                 });
 
@@ -36,33 +40,21 @@ angular.module('TEST', [])
             });
         }
     })
+
     .directive('initDomElPosition', function() {
         return function(scope, element, attrs) {
             element.one('mousedown', function(e) {
                 var $blocks = element.children();
+                var $holder = element.closest('.blocks-holder');
                 $blocks.each(function(i, block) {
                     var $block = $(block);
                     var position = $block.position();
                     console.log(position);
                     $block.css('left', position.left + 'px');
-                    $block.css('top', position.top + 'px');
+                    $block.css('top', position.top + $holder.scrollTop() + 'px');
                 });
                 $blocks.css('position', 'absolute');
             });
-            //var watch =  scope.$watch(function() {
-                //var $blocks = element.children();
-                //if ($blocks.length) {
-
-                    //$blocks.one('mousedown', function() {
-                        //console.log('wtf');
-                    //});
-                    //watch();
-                //}
-            //});
-            //element.children().one('mousedown', function() {
-                //console.log('wtf');
-                //$(this).css('position', 'absolute');
-            //});
         }
     })
 
