@@ -1,8 +1,53 @@
 /*global angular, _ */
 angular.module('TEST', [])
-    .controller('ItemsCtrl', function($scope) {
-        $scope.items = data;
+    .controller('ItemsCtrl', function($scope, MoviesSrv) {
+        $scope.items = MoviesSrv.data;
 
+    })
+    .controller('SelectPropCtrl', function($scope, PropertiesSrv) {
+
+        $scope.properties = PropertiesSrv;
+
+    })
+    .service('MoviesSrv', function() {
+        var movies = {
+            data: data,
+            paintMovies: function(property, value) {
+                if (!_.include(property.value, value)) { return; }
+                _.each(movies.data, function(movie) {
+                    var movie_prop = movie.properties[property.name];
+                    if (_.isString(movie_prop) && movie_prop === value.name || _.include(movie_prop, value.name)) {
+                        movie.color = value.color;
+                    } else {
+                        movie.color = "";
+                    }
+                });
+            }
+            
+        }
+        return movies;
+    })
+    .service('PropertiesSrv', function(MoviesSrv) {
+        var genre_list = [
+            { name: 'Ужасы',   color: 'red'},
+            { name: 'Комедия', color: 'green'},
+            { name: 'Драма',  color: 'blue'},
+            { name: 'Боевик',  color: 'orange'},
+        ]
+        var properties = {
+            list: [
+                { name: 'genre', title: 'Жанр', value: genre_list },
+                { name: 'artists', title: 'Актер', value: [] },
+                { name: 'country', title: 'Страна', value: [] }
+            ],
+            selected: false,
+            property_value: {},
+            change: function() {
+                console.log(properties.property_value);
+                MoviesSrv.paintMovies(properties.selected, properties.property_value);
+            }
+        };
+        return properties
     })
     .directive('blockList', function() {
         return {
@@ -20,9 +65,7 @@ angular.module('TEST', [])
             var $holder = element.closest('.blocks-holder');
 
             element.on('mousedown', function(e) {
-                console.log(e);
                 item.active = true;
-                console.log($holder);
 
                 // вешаем на document, потому что иногда мышь двигается слишком быстро, и element перестает слушать событие mousemove
                 $document.on('mousemove', function(e) {
@@ -49,7 +92,6 @@ angular.module('TEST', [])
                 $blocks.each(function(i, block) {
                     var $block = $(block);
                     var position = $block.position();
-                    console.log(position);
                     $block.css('left', position.left + 'px');
                     $block.css('top', position.top + $holder.scrollTop() + 'px');
                 });
@@ -81,11 +123,12 @@ angular.module('TEST', [])
                 }
             });
 
-            scope.$watch(function() {
+            var watch = scope.$watch(function() {
                 var $list = element.children();
                 if ($list.length > cut_length) {
                     hideList($list, cut_length);
                     element.append($li_show_hide);
+                    watch();
                 }
             });
         }
