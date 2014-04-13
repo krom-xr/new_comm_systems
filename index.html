@@ -45,38 +45,24 @@
             <hr />
             
 
-                <div class="form-group">
-                    <select class="form-control"
-                        ng-options="option.title for option in properties.list"
-                        ng-model="properties.selected"
-                        ng-change="properties.change()"
-                        >
+            <div class="form-group">
+                <select class="form-control"
+                    ng-options="option.title for option in properties.list"
+                    ng-model="properties.selected"
+                    ng-change="properties.change()"
+                    >
 
-                        <option value="">Выберите параметр</option>
-                    </select>
-                </div>
+                    <option value="">Выберите параметр</option>
+                </select>
+            </div>
 
-                <div class="radio" ng-repeat="item in properties.selected.value">
-                    <label>
-                        <input type="radio" ng-value="item" ng-model="properties.property_value" ng-change="properties.change()">
-                        
-                        <span ng-style="{color: item.color}">{{ item.name }}</span>
-                    </label>
-                </div>
-
-                <!--<div class="radio">-->
-                    <!--<label>-->
-                        <!--<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">-->
-                        <!--<span style="color: blue">Драма</span>-->
-                    <!--</label>-->
-                <!--</div>-->
-                <!--<div class="radio">-->
-                    <!--<label>-->
-                        <!--<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">-->
-                        <!--<span style="color: green">Боевик</span>-->
-                    <!--</label>-->
-                <!--</div>-->
-
+            <div class="radio" ng-repeat="item in properties.selected.value">
+                <label>
+                    <input type="radio" ng-value="item" ng-model="properties.property_value" ng-change="properties.change()">
+                    <span ng-style="{color: item.color}">{{ item.name }}</span>
+                </label>
+                <input type="color" ng-model="item.color" value="item.color" ng-change="properties.change()" />
+            </div>
 
         </div>
     </div>

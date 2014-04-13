@@ -42,22 +42,28 @@ angular.module('TEST', [])
         return movies;
     })
     .service('PropertiesSrv', function(MoviesSrv) {
+        var orange = "#FFA500",
+            red = "#FF0000"
+            green = "#008000", 
+            blue = "#0000FF", 
+            brown = "#A52A2A";
+
         var genre_list = [
-            { name: 'Боевик',  color: 'orange'},
-            { name: 'Ужасы',   color: 'red'},
-            { name: 'Комедия', color: 'green'},
-            { name: 'Драма',  color: 'blue'},
+            { name: 'Боевик',  color: orange},
+            { name: 'Ужасы',   color: red},
+            { name: 'Комедия', color: green},
+            { name: 'Драма',  color: blue},
         ];
         var country_list = [
-            { name: 'США',  color: 'red'},
-            { name: 'Великобритания',  color: 'blue'},
-            { name: 'Франция',  color: 'brown'},
+            { name: 'США',  color: red},
+            { name: 'Великобритания',  color: blue},
+            { name: 'Франция',  color: brown},
         ];
         var artists_list = [
-            { name: 'Сигурни Уивер',  color: 'red'},
-            { name: 'Арнольд Шварценеггер',  color: 'blue'},
-            { name: 'Брэдли Купер',  color: 'brown'},
-            { name: 'Юэн МакГрегор',  color: 'orange'},
+            { name: 'Сигурни Уивер',  color: red},
+            { name: 'Арнольд Шварценеггер',  color: blue},
+            { name: 'Брэдли Купер',  color: brown},
+            { name: 'Юэн МакГрегор',  color: orange},
         ]
 
         var properties = {
